@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # 1. Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: meal_match_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password123}
+      POSTGRES_DB: ${DB_NAME:-meal_match}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Cache
+  redis:
+    image: redis:7-alpine
+    container_name: meal_match_cache
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # 3. Backend API (The Web Server)
+  api:
+    build: ./server  # Build from the server folder
+    container_name: meal_match_api
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "3001:3001" # Expose API to host
+    environment:
+      - PORT=3001
+      # NOTICE: We use container names, not localhost!
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - DB_PASSWORD=password123
+      # Add your API keys here too
+
+  # 4. Background Worker (The Email Sender)
+  worker:
+    build: ./server
+    container_name: meal_match_worker
+    depends_on:
+      - redis
+      - postgres
+    # We override the command to run the worker instead of the API
+    command: npm run worker 
+    environment:
+      - REDIS_HOST=redis
+      - DB_HOST=postgres
+      - DB_PASSWORD=password123
+
+volumes:
+  postgres_data:
