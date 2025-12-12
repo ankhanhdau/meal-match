@@ -15,7 +15,7 @@ const Favorites: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto animate-fade-in">
+    <div className="max-w-8xl mx-auto animate-fade-in">
       <header className="mb-8 flex items-center gap-3">
         <div className="p-3 bg-red-100 text-red-600 rounded-2xl">
            <Heart size={28} fill="currentColor" />

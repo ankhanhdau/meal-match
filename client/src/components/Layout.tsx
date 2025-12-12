@@ -21,7 +21,7 @@ const Layout: React.FC = () => {
   }, [user, location.pathname, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row max-w-7xl mx-auto bg-stone-50">
+    <div className="min-h-screen flex flex-col md:flex-row max-w-9xl mx-auto bg-stone-50">
       
       {/* Mobile Header */}
       <div className="md:hidden bg-white border-b border-stone-200 p-4 sticky top-0 z-30 flex justify-between items-center">

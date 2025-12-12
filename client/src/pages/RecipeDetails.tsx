@@ -54,7 +54,7 @@ const RecipeDetails: React.FC = () => {
     const steps = recipe?.analyzedInstructions?.[0]?.steps || [];
 
     return (
-        <div className="max-w-6xl mx-auto pb-10 animate-fade-in">
+        <div className="max-w-8xl mx-auto pb-10 animate-fade-in">
             <button
                 onClick={() => navigate(-1)}
                 className="mb-6 flex items-center gap-2 text-stone-500 hover:text-stone-900 transition-colors"

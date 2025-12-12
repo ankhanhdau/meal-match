@@ -44,19 +44,19 @@ const handleSearch = async (e?: React.FormEvent) => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10">
+    <div className="max-w-8xl mx-auto space-y-10">
       
       {/* Hero Section */}
       <section className="text-center space-y-6 py-8">
         <h1 className="text-4xl md:text-5xl font-bold text-stone-900 tracking-tight">
           What are we cooking <span className="text-brand-500">today?</span>
         </h1>
-        <p className="text-lg text-stone-500 max-w-2xl mx-auto">
+        <p className="text-lg text-stone-500 max-w-4xl mx-auto">
           We found <span className="font-semibold text-brand-600">{pantry.length} items</span> in your pantry. 
           Let our chef suggest the perfect meal.
         </p>
 
-        <div className="max-w-xl mx-auto relative">
+        <div className="max-w-2xl mx-auto relative">
           <form onSubmit={handleSearch} className="relative">
              <Input 
                 value={query}

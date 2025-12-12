@@ -21,7 +21,7 @@ const Pantry: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto animate-fade-in">
+    <div className="max-w-6xl mx-auto animate-fade-in">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-stone-900 mb-2">My Pantry</h1>
         <p className="text-stone-500">Manage your available ingredients to get better recipe matches.</p>
