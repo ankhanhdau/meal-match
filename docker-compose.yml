@@ -7,9 +7,9 @@ services:
     container_name: meal_match_db
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-password123}
-      POSTGRES_DB: ${DB_NAME:-meal_match}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
@@ -37,9 +37,15 @@ services:
       # NOTICE: We use container names, not localhost!
       - DB_HOST=postgres
       - REDIS_HOST=redis
-      - DB_PASSWORD=password123
-      # Add your API keys here too
-
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      # External APIs
+      - SPOONACULAR_API_KEY=${SPOONACULAR_API_KEY}
+      # Auth & Security
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
   # 4. Background Worker (The Email Sender)
   worker:
     build: ./server
@@ -52,7 +58,9 @@ services:
     environment:
       - REDIS_HOST=redis
       - DB_HOST=postgres
-      - DB_PASSWORD=password123
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
 
 volumes:
   postgres_data:
