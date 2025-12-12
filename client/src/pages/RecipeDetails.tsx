@@ -82,7 +82,11 @@ const RecipeDetails: React.FC = () => {
                         {recipe?.vegan && <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-700/20 backdrop-blur-md border border-green-600/30 text-green-100 text-sm"><Leaf size={14} /> Vegan</span>}
                         {recipe?.dairyFree && <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-500/20 backdrop-blur-md border border-purple-400/30 text-purple-100 text-sm">Dairy Free</span>}
                         {recipe?.glutenFree && <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500/20 backdrop-blur-md border border-amber-400/30 text-amber-100 text-sm">Gluten Free</span>}
-                        {recipe?.healthScore && <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-500/20 backdrop-blur-md border border-blue-400/30 text-blue-100 text-sm">Health Score: {recipe.healthScore}</span>}
+                        {recipe?.healthScore !== undefined && recipe.healthScore > 0 && (
+                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-500/20 backdrop-blur-md border border-blue-400/30 text-blue-100 text-sm">
+                                Health Score: {recipe.healthScore}
+                            </span>
+                        )}
                     </div>
                 </div>
                 <div className="absolute top-6 right-6 flex gap-3">
