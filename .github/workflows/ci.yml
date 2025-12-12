@@ -1,0 +1,45 @@
+name: Backend CI Pipeline
+
+# Trigger this pipeline on push to main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # We need a Service Container for Redis because your tests/build might try to connect to it
+    # If your build (tsc) doesn't connect to DB, you can skip 'services', 
+    # but let's include Redis just in case you add integration tests later.
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    defaults:
+      run:
+        working-directory: ./server # Change to server directory
+
+    steps:
+    # 1. Check out the code from the repo
+    - uses: actions/checkout@v3
+
+    # 2. Install Node.js
+    - name: Use Node.js 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: server/package-lock.json
+
+    # 3. Install Dependencies (Clean Install)
+    - name: Install Dependencies
+      run: npm ci
+
+    # 4. Run the Verification Script
+    - name: Verify Build (TypeScript Compile)
+      run: npm run verify
