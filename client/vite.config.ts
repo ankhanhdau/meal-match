@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://3.107.0.47:3001',
+        target: 'https://meal-match.duckdns.org',
         changeOrigin: true,
         secure: false
       }
