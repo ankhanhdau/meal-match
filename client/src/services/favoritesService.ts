@@ -1,9 +1,10 @@
 import type { RecipeDetail } from "../types.js";
 import { getAuthHeaders } from '../utils/authHeader.js';
+import { getApiUrl } from './api.js';
 
 export default class FavoritesService {
     static async getFavorites(): Promise<RecipeDetail[]> {
-        const response = await fetch('/api/favorites', {
+        const response = await fetch(getApiUrl('api/favorites'), {
             method: 'GET',
             headers: getAuthHeaders()
         });
@@ -15,7 +16,7 @@ export default class FavoritesService {
     };
 
     static async getFavoriteById(recipeId: number): Promise<RecipeDetail> {
-        const response = await fetch(`/api/favorites/${recipeId}`, {
+        const response = await fetch(getApiUrl(`api/favorites/${recipeId}`), {
             method: 'GET',
             headers: getAuthHeaders()
         });
@@ -27,7 +28,7 @@ export default class FavoritesService {
     };
 
     static async addFavorite(recipe: RecipeDetail): Promise<RecipeDetail> {
-        const response = await fetch('/api/favorites', {
+        const response = await fetch(getApiUrl('api/favorites'), {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify(recipe)
@@ -40,7 +41,7 @@ export default class FavoritesService {
     };
 
     static async removeFavorite(recipeId: number): Promise<{ message: string; recipeId: number }> {
-        const response = await fetch(`/api/favorites/${recipeId}`, {
+        const response = await fetch(getApiUrl(`api/favorites/${recipeId}`), {
             method: 'DELETE',
             headers: getAuthHeaders()
         });

@@ -1,6 +1,8 @@
+import { getApiUrl } from './api';
+
 export default class AuthService {
     static async login(email: string, password: string) {
-        const response = await fetch('api/auth/login', {
+        const response = await fetch(getApiUrl('api/auth/login'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -14,7 +16,7 @@ export default class AuthService {
     };
 
     static async register(name: string, email: string, password: string) {
-        const response = await fetch('api/auth/register', {
+        const response = await fetch(getApiUrl('api/auth/register'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })
