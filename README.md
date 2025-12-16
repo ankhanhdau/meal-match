@@ -6,6 +6,8 @@ A **distributed, containerized Full Stack application** for recipe management, d
 
 🚀 **Live Demo:** [https://meal-match.duckdns.org](https://meal-match-kappa.vercel.app/)
 
+![Meal Match Demo](./assets/demo.gif)
+
 ---
 
 ## 🏗 System Architecture
