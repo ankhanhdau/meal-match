@@ -1,5 +1,5 @@
 import FavoritesService from "../services/favorites-service.js";
-import {type AuthenticatedRequest } from "../middlewares/auth-middleware.js";
+import { type AuthenticatedRequest } from "../middlewares/auth-middleware.js";
 import type { RecipeDetail } from "../types/recipes.js";
 import type { Response } from "express";
 
@@ -57,7 +57,7 @@ export default class FavoritesController {
             const result = await FavoritesService.addFavorite(userId, recipe);
 
             if (result.rowCount === 0) {
-                // Recipe already exists due to ON CONFLICT DO NOTHING - this is not an error
+                // Recipe already exists due to ON CONFLICT DO NOTHING
                 return res.status(200).json({ message: 'Recipe already in favorites', recipeId: recipe.id });
             }
             res.status(201).json({ message: 'Recipe added to favorites', recipeId: recipe.id });
@@ -82,13 +82,35 @@ export default class FavoritesController {
             }
 
             const result = await FavoritesService.removeFavorite(userId, recipeId);
-            if (result.rows.length === 0) {
+
+            if (!result) {  
                 return res.status(404).json({ error: "Favorite not found" });
             }
             res.json({ message: "Favorite removed", recipeId });
         } catch (error) {
             console.error("Error removing favorite:", error);
             res.status(500).json({ error: "Failed to remove favorite" });
+        }
+    };
+
+    // Search favorites
+    static async searchFavorites(req: AuthenticatedRequest, res: Response): Promise<void | Response> {
+        try {
+            const userId = req.user?.userId;
+            const query: string = req.query.query as string;
+
+            if (!userId) {
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+            if (!query || typeof query !== 'string') {
+                return res.status(400).json({ error: 'Invalid search query' });
+            }
+
+            const results = await FavoritesService.searchFavorites(userId, query);
+            res.json(results);
+        } catch (error) {
+            console.error("Error searching favorites:", error);
+            res.status(500).json({ error: "Failed to search favorites" });
         }
     };
 };
