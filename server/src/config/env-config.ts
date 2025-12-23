@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 export const env = {
     SPOONACULAR_API_KEY: process.env.SPOONACULAR_API_KEY as string,
     PORT: Number(process.env.PORT) || 3001,
@@ -15,4 +11,5 @@ export const env = {
     DB_HOST: process.env.DB_HOST as string || 'localhost',
     DB_PORT: Number(process.env.DB_PORT) || 5432,
     DB_NAME: process.env.DB_NAME as string,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY as string
 };
