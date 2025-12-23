@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -13,6 +15,8 @@ CREATE TABLE IF NOT EXISTS user_favorites (
     recipe_id INT NOT NULL,
     title TEXT NOT NULL,
     image TEXT,
+    summary TEXT,
+    cuisines TEXT [],
     dishTypes TEXT [],
     readyInMinutes INT,
     servings INT,
@@ -27,8 +31,13 @@ CREATE TABLE IF NOT EXISTS user_favorites (
     nutrition JSONB,
     sourceUrl TEXT,
     created_at TIMESTAMP DEFAULT NOW(),
+    embedding vector(1536),
     UNIQUE (user_id, recipe_id)
 );
+
+CREATE INDEX IF NOT EXISTS embedding_idx ON user_favorites 
+USING hnsw (embedding vector_cosine_ops) 
+WITH (m=16, ef_construction=200);
 
 CREATE TABLE IF NOT EXISTS pantry_items (
     id SERIAL PRIMARY KEY,
