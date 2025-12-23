@@ -53,7 +53,6 @@ services:
     depends_on:
       - redis
       - postgres
-    # We override the command to run the worker instead of the API
     command: npm run worker 
     environment:
       - REDIS_HOST=redis
