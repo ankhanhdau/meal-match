@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # 1. Database
   postgres:
-    image: postgres:15-alpine
+    image: pgvector/pgvector:pg16
     container_name: meal_match_db
     restart: always
     environment:
@@ -41,6 +41,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       # External APIs
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - SPOONACULAR_API_KEY=${SPOONACULAR_API_KEY}
       # Auth & Security
       - JWT_SECRET=${JWT_SECRET}
