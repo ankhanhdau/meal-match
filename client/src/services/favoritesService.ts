@@ -51,4 +51,16 @@ export default class FavoritesService {
         }
         return response.json();
     };
+
+    static async searchFavorites(query: string): Promise<RecipeDetail[]> {
+        const response = await fetch(getApiUrl(`api/favorites/search?query=${encodeURIComponent(query)}`), {
+            method: 'GET',
+            headers: getAuthHeaders()
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to search favorites');
+        }
+        return response.json();
+    };
 };
