@@ -33,4 +33,8 @@ export interface RecipeDetail {
         }[];
     };
     sourceUrl: string;
+    cuisines?: string[];
+    diets?: string[];
+    summary?: string;
+    instructions?: string;
 }

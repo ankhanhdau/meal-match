@@ -27,6 +27,9 @@ interface InstructionStep {
     step: string;
 }
 export interface RecipeDetail extends RecipeSummary {
+    summary: string;
+    cuisines: string[];
+    instructions: string;
     dishTypes: string[];
     readyInMinutes: number;
     servings: number;
