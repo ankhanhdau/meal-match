@@ -34,7 +34,6 @@ services:
       - "3001:3001" # Expose API to host
     environment:
       - PORT=3001
-      # NOTICE: We use container names, not localhost!
       - DB_HOST=postgres
       - REDIS_HOST=redis
       - DB_USER=${DB_USER}
