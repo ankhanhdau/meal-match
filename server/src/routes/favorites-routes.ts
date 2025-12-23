@@ -7,6 +7,9 @@ const favoritesRouter = Router();
 // Get user favorites
 favoritesRouter.get("/", authMiddleware, FavoritesController.getUserFavorites);
 
+// Search favorites
+favoritesRouter.get("/search", authMiddleware, FavoritesController.searchFavorites);
+
 // Get user favorites recipe by ID
 favoritesRouter.get("/:id", authMiddleware, FavoritesController.getFavoriteById);
 
