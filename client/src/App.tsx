@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import RecipeDetails from './pages/RecipeDetails';
 import Favorites from './pages/Favorites';
@@ -8,24 +8,27 @@ import Layout from './components/Layout';
 import { StoreProvider } from './context/Store';
 import { useStore } from './hooks/useStore';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useStore();
-  
+const ProtectedLayout: React.FC = () => {
+  const { user, isLoading } = useStore();
+  if (isLoading) {
+    return <div style={{ textAlign: 'center', marginTop: '2rem' }}>Loading...</div>;
+  }
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
-  return <>{children}</>;
+  return <Layout />;
 };
+
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/auth" element={<Auth />} />
-      <Route element={<Layout />}>
-        <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/recipe/:id" element={<ProtectedRoute><RecipeDetails /></ProtectedRoute>} />
-        <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
-        <Route path="/pantry" element={<ProtectedRoute><Pantry /></ProtectedRoute>} />
+      <Route element={<ProtectedLayout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/recipe/:id" element={<RecipeDetails />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/pantry" element={<Pantry />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
@@ -34,11 +37,11 @@ const AppRoutes = () => {
 
 const App: React.FC = () => {
   return (
-    <StoreProvider>
-      <Router>
+    <Router>
+      <StoreProvider>
         <AppRoutes />
-      </Router>
-    </StoreProvider>
+      </StoreProvider>
+    </Router>
   );
 };
 

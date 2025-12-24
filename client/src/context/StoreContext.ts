@@ -17,4 +17,4 @@ export interface StoreContextType {
     isLoading: boolean;
 }
 
-export const StoreContext = createContext<StoreContextType | undefined>(undefined);
+export const StoreContext = createContext<StoreContextType>(null as unknown as StoreContextType);
