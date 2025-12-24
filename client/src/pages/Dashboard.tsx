@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, Badge, RecipeSkeleton, Card } from '../components/UI';
-import { Search, Sparkles, AlertCircle, Filter, Clock, ChevronDown, Check, Wand2, XCircle } from 'lucide-react';
+import { Search, Sparkles, AlertCircle, Filter, Clock, ChevronDown, Check, Wand2, XCircle, Flame } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import RecipeService from '../services/recipeService';
 import type { RecipeSummary, SearchFilters } from '../types';
@@ -53,6 +53,8 @@ const Dashboard: React.FC = () => {
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [selectedIntolerances, setSelectedIntolerances] = useState<string[]>([]);
   const [maxReadyTime, setMaxReadyTime] = useState<number | ''>('');
+  const [minCalories, setMinCalories] = useState<number | ''>('');
+  const [maxCalories, setMaxCalories] = useState<number | ''>('');
 
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -77,7 +79,9 @@ const Dashboard: React.FC = () => {
       type: mealType || undefined,
       diet: selectedDiets,
       intolerances: selectedIntolerances,
-      maxReadyTime: maxReadyTime === '' ? undefined : Number(maxReadyTime)
+      maxReadyTime: maxReadyTime === '' ? undefined : Number(maxReadyTime),
+      minCalories: minCalories === '' ? undefined : Number(minCalories),
+      maxCalories: maxCalories === '' ? undefined : Number(maxCalories)
     };
 
     try {
@@ -260,7 +264,7 @@ const Dashboard: React.FC = () => {
               {/* Intolerances Column */}
               <div>
                 <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Intolerances</label>
-                <div className="grid grid-cols-2 gap-y-3">
+                <div className="grid grid-cols-2 gap-y-3 mb-3">
                   {INTOLERANCES.map(intol => (
                     <label key={intol.value} className="flex items-center gap-3 group cursor-pointer">
                       <div className={`w-5 h-5 rounded-lg border flex items-center justify-center transition-all ${selectedIntolerances.includes(intol.value)
@@ -280,6 +284,32 @@ const Dashboard: React.FC = () => {
                       </span>
                     </label>
                   ))}
+                </div>
+                {/* Calories Range */}
+                <div>
+                  <label className="block text-xs font-bold text-stone-400 uppercase tracking-widest mb-3 h-8 flex items-center">Calorie Range</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="relative">
+                      <Input
+                        type="number"
+                        placeholder="Min"
+                        value={minCalories}
+                        onChange={(e) => setMinCalories(e.target.value === '' ? '' : parseInt(e.target.value))}
+                        className="pl-9 h-12"
+                      />
+                      <Flame className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-300" size={14} />
+                    </div>
+                    <div className="relative">
+                      <Input
+                        type="number"
+                        placeholder="Max"
+                        value={maxCalories}
+                        onChange={(e) => setMaxCalories(e.target.value === '' ? '' : parseInt(e.target.value))}
+                        className="pl-9 h-12"
+                      />
+                      <Flame className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-300" size={14} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -328,10 +358,7 @@ const Dashboard: React.FC = () => {
                   <Wand2 size={48} />
                 </div>
                 <h3 className="text-2xl font-bold text-stone-900 mb-2">Ready for a Culinary Adventure?</h3>
-                <p className="text-stone-500 mb-8 max-w-sm mx-auto">Tell us what you're in the mood for or just hit search to see our pantry suggestions.</p>
-                <Button onClick={() => handleSearch()} variant="secondary" size="lg" className="rounded-2xl">
-                  Search from Pantry ({pantry.length} items)
-                </Button>
+                <p className="text-stone-500 mb-8 max-w-sm mx-auto">Tell us what you're in the mood for.</p>
               </div>
             ) : results.length === 0 ? (
               <div className="col-span-full text-center py-24 bg-stone-100/50 rounded-[2rem] border border-stone-200">
@@ -392,7 +419,7 @@ const RecipeCard: React.FC<{ recipe: RecipeSummary; onClick: () => void }> = ({ 
         </div>
 
         <div className="flex items-center gap-4 text-xs font-medium text-stone-500 mb-4 mt-2">
-          {recipe.usedIngredientCount > 0 ? (
+          {recipe.missedIngredientCount > 0 ? (
             <div className="flex items-center gap-1 text-red-500 bg-red-50 px-2 py-1 rounded-full">
               <AlertCircle size={14} /> Missing {recipe.missedIngredientCount} items
             </div>
