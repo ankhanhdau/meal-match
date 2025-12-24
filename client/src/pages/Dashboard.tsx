@@ -140,7 +140,7 @@ const Dashboard: React.FC = () => {
                 rows={2}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="e.g. A high-protein Mediterranean dinner that's quick to clean up..."
+                placeholder="e.g. A high-calorie Mediterranean meal that's quick to clean up..."
                 className="w-full p-4 pl-5 rounded-2xl border border-stone-200 bg-white text-stone-900 placeholder-stone-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 focus:outline-none transition-all resize-none text-lg leading-relaxed shadow-sm"
               />
             </div>
