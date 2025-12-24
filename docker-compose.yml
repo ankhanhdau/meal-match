@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. Database
   postgres:
@@ -60,6 +58,10 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
+      # Email Config
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - APP_URL=${APP_URL}
 
 volumes:
   postgres_data:
