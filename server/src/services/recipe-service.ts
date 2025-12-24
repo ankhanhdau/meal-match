@@ -9,9 +9,8 @@ export default class RecipeService {
         this.baseUrl = 'https://api.spoonacular.com';
     }
 
-    async getRecipesByIngredients(ingredients: string[], number: number = 6) {
-        const cleanedIngredients = ingredients.map(ing => ing.toLowerCase().trim()).filter(ing => ing.length > 0);
-        const cacheKey = `recipes:${cleanedIngredients.sort().join(',')}:${number}`;
+    async getRecipesByFilters(queryString: string, number: number = 6) {
+        const cacheKey = `recipes:${queryString}:${number}`;
         try {
             const cachedData = await redisClient.get(cacheKey);
             if (cachedData) {
@@ -22,15 +21,10 @@ export default class RecipeService {
             console.error('Error accessing Redis cache:', err);
         }
         console.log('Cache miss for key:', cacheKey);
-        const params = new URLSearchParams({
-            ingredients: cleanedIngredients.join(',+'),
-            number: number.toString(),
-            apiKey: this.apiKey
-        });
         const response = await fetch(
-            `${this.baseUrl}/recipes/findByIngredients?${params.toString()}`
+            `${this.baseUrl}/recipes/complexSearch?apiKey=${this.apiKey}&${queryString}&number=${number}&fillIngredients=true&sort=max-used-ingredients`
         );
-
+        console.log('Fetching from API:', response.url);
         if (!response.ok) {
             throw new Error(`Error fetching recipes: ${response.statusText}`);
         }

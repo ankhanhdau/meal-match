@@ -8,11 +8,11 @@ let recipeService: RecipeService;
 function getRecipeService(): RecipeService {
     if (!recipeService) {
         const apiKey = env.SPOONACULAR_API_KEY;
-        
+
         if (!apiKey) {
             throw new Error('SPOONACULAR_API_KEY is not defined in environment variables');
         }
-        
+
         recipeService = new RecipeService(apiKey);
     }
     return recipeService;
@@ -21,17 +21,13 @@ function getRecipeService(): RecipeService {
 export default class RecipeController {
     static async search(req: AuthenticatedRequest, res: Response) {
         try {
-            const { ingredients, number } = req.query;
-            if (!ingredients) {
-                return res.status(400).json({ error: 'Ingredients query parameter is required' });
-            }
-            if (typeof ingredients !== 'string') {
-                return res.status(400).json({ error: 'Ingredients must be a string' });
-            }
-            const ingredientsArray = ingredients.split(',');
+            const queryString = req.url.split('?')[1] || '';
+            const number = typeof req.query.number === 'string' ? Number(req.query.number) : 6;
             const service = getRecipeService();
-            const data = await service.getRecipesByIngredients(ingredientsArray, Number(number) || 6);
-            res.json(data);
+            const data = await service.getRecipesByFilters(queryString, number);
+            console.log(data.results);
+            console.log(data);
+            res.json(data.results || []);
         } catch {
             res.status(500).json({ error: 'Failed to fetch recipes' });
         }
