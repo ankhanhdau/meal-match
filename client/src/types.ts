@@ -55,12 +55,14 @@ export interface RecipeDetail extends RecipeSummary {
     sourceUrl: string;
 }
 export interface SearchFilters {
-  query?: string;
-  includeIngredients?: string[];
-  excludeIngredients?: string[];
-  cuisine?: string;
-  type?: string;
-  diet?: string[];
-  intolerances?: string[];
-  maxReadyTime?: number;
+    query?: string;
+    includeIngredients?: string[];
+    excludeIngredients?: string[];
+    cuisine?: string;
+    type?: string;
+    diet?: string[];
+    intolerances?: string[];
+    maxReadyTime?: number;
+    minCalories?: number;
+    maxCalories?: number;
 }
