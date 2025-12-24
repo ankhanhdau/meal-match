@@ -21,6 +21,8 @@ export interface RecipeSummary {
     image: string;
     usedIngredients: Ingredient[];
     missedIngredients: Ingredient[];
+    usedIngredientCount: number;
+    missedIngredientCount: number;
 }
 interface InstructionStep {
     number: number;
@@ -51,4 +53,14 @@ export interface RecipeDetail extends RecipeSummary {
         }[];
     };
     sourceUrl: string;
+}
+export interface SearchFilters {
+  query?: string;
+  includeIngredients?: string[];
+  excludeIngredients?: string[];
+  cuisine?: string;
+  type?: string;
+  diet?: string[];
+  intolerances?: string[];
+  maxReadyTime?: number;
 }
