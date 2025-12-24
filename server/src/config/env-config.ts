@@ -11,5 +11,8 @@ export const env = {
     DB_HOST: process.env.DB_HOST as string || 'localhost',
     DB_PORT: Number(process.env.DB_PORT) || 5432,
     DB_NAME: process.env.DB_NAME as string,
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY as string
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY as string,
+    EMAIL_USER: process.env.EMAIL_USER as string,
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD as string,
+    APP_URL: process.env.APP_URL as string || 'https://meal-match.duckdns.org'
 };
