@@ -21,14 +21,58 @@ function getRecipeService(): RecipeService {
 export default class RecipeController {
     static async search(req: AuthenticatedRequest, res: Response) {
         try {
-            const queryString = req.url.split('?')[1] || '';
-            const number = typeof req.query.number === 'string' ? Number(req.query.number) : 6;
             const service = getRecipeService();
-            const data = await service.getRecipesByFilters(queryString, number);
-            console.log(data.results);
-            console.log(data);
+
+            // Destructure the params
+            const { query, number, ...manualFilters } = req.query;
+
+            // Initialize the Final Parameters container
+            const finalParams = new URLSearchParams();
+
+            //  Process AI Natural Language if query exists
+            if (query && typeof query === 'string') {
+                const aiQueryString = await service.convertNaturalLanguageToQuery(query);
+
+                // Parse the AI result into finalParams
+                const aiParams = new URLSearchParams(aiQueryString);
+                aiParams.forEach((value, key) => {
+                    finalParams.append(key, value);
+                });
+            }
+
+            // Apply Manual Filters (Overrides/Additions)
+            Object.entries(manualFilters).forEach(([key, value]) => {
+                if (value) {
+                    // Special handling for Ingredients to merge 
+                    if (key === 'includeIngredients' && finalParams.has('includeIngredients')) {
+                        const existing = finalParams.get('includeIngredients');
+                        finalParams.set('includeIngredients', `${existing},${value}`);
+                    }
+                    // For everything else, Manual overrides AI 
+                    else {
+                        finalParams.set(key, String(value));
+                    }
+                }
+            });
+
+            if (finalParams.has('includeIngredients')) {
+                finalParams.set("sort", "max-used-ingredients");
+            } else {
+                finalParams.set("sort", "popularity");
+            }
+
+            // Execute Search
+            const limit = typeof number === 'string' ? Number(number) : 9;
+            const finalQueryString = finalParams.toString();
+
+            console.log('🔍 Final Search Query:', finalQueryString);
+
+            const data = await service.getRecipesByFilters(finalQueryString, limit);
+
             res.json(data.results || []);
-        } catch {
+
+        } catch (error) {
+            console.error(error);
             res.status(500).json({ error: 'Failed to fetch recipes' });
         }
     };
