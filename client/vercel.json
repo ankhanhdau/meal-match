@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://meal-match.duckdns.org:3001/api/$1"
+      "destination": "https://meal-match.duckdns.org/api/$1"
     },
     {
       "source": "/(.*)",
