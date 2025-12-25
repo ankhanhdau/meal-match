@@ -58,12 +58,16 @@ Users can search using complex, unstructured sentences. The backend utilizes **G
 
 - **Output:** Database executes a precise filter for `{ query: "pasta", cuisine: "asian", maxReadyTime: 60, maxCalories: 500 }`.
 
+---  
+
 ### 2. Semantic Vector Search
 Unlike traditional keyword matching, Meal Match utilizes **vector embeddings** to find recipes that are conceptually similar, even if they don't share the exact same words.
 
 - **Embeddings:** Recipe data is converted into high-dimensional vectors when user saves a recipe to their favorites.
 
 - **Vector Database:** Vectors are stored in PostgreSQL using the `pgvector` extension for high-performance similarity search.
+
+---
 
 ### 3. Distributed Caching (Redis)
 To reduce latency and external API costs, search results from Spoonacular are cached in Redis with a TTL (Time-To-Live).
