@@ -49,7 +49,7 @@ graph TD
 ---
 
 ## 🌟 Key Engineering Features
-## 1. AI-Powered Natural Language Processing (NLP)
+### 1. AI-Powered Natural Language Processing (NLP)
 Users can search using complex, unstructured sentences. The backend utilizes **Generative AI (LLM)** to parse user intent into structured data.
 
 - **Input:** *"I want an Asian-style pasta recipes that are ready in under 60 minutes and have fewer than 500 calories."*
@@ -58,7 +58,7 @@ Users can search using complex, unstructured sentences. The backend utilizes **G
 
 - **Output:** Database executes a precise filter for `{ query: "pasta", cuisine: "asian", maxReadyTime: 60, maxCalories: 500 }`.
 
-## 2. Semantic Vector Search
+### 2. Semantic Vector Search
 Unlike traditional keyword matching, Meal Match utilizes **vector embeddings** to find recipes that are conceptually similar, even if they don't share the exact same words.
 
 - **Embeddings:** Recipe data is converted into high-dimensional vectors when user saves a recipe to their favorites.
