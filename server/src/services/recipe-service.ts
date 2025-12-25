@@ -86,7 +86,6 @@ export default class RecipeService {
         const response = await fetch(
             `${this.baseUrl}/recipes/complexSearch?apiKey=${this.apiKey}&${queryString}&number=${number}&fillIngredients=true`
         );
-        console.log('Fetching from API:', response.url);
         if (!response.ok) {
             throw new Error(`Error fetching recipes: ${response.statusText}`);
         }
